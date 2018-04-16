@@ -1,13 +1,13 @@
 package view;
 
+import com.aipos.models.Facultet;
+import com.aipos.models.Student;
+import com.aipos.models.Univer;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.*;
-import java.sql.Time;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class View {
 
@@ -71,7 +71,6 @@ public class View {
         JLabel jLabelsurname = new JLabel("SURNAME");
         jLabelsurname.setBounds(900,100,100,40);
         jFrame.add(jLabelsurname);
-
         jTextFieldgroup =new JTextField("");
         jTextFieldgroup.setBounds(1000,150,200,40);
         jFrame.add(jTextFieldgroup);
@@ -121,7 +120,6 @@ public class View {
         jTextFieldsrbal =new JTextField("");
         jTextFieldsrbal.setBounds(1000,400,200,40);
         jFrame.add(jTextFieldsrbal);
-
         jTextFieldnumber =new JTextField("");
         jTextFieldnumber.setBounds(1000,450,200,40);
         jFrame.add(jTextFieldnumber);
@@ -144,7 +142,7 @@ public class View {
         jButtonFindStudent.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-           /*     findStudent(jTextFieldSearch.getText());*/
+                findStudent(jTextFieldSearch.getText());
             }
         });
 
@@ -152,18 +150,33 @@ public class View {
         jButtonDeleteStudent.setBounds(800,550,200,40);
         jFrame.add(jButtonDeleteStudent);
 
-    /*    jButtonDeleteStudent.addActionListener(new ActionListener() {
+        jButtonDeleteStudent.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                customClient.deleteStudent(deleteStudent);
+               conroller.deleteFile(deleteStudent);
                 updateStudentGui();
             }
-        });*/
+        });
 
         jButtonAddStudent.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                conroller.addStudent("Paul");
+                Student student = new Student();
+                Univer univer = new Univer();
+                univer.setName(jTextFieldNameUnivercsity.getText());
+                univer.setSphere(jTextFieldUnivercsitySpher.getText());
+                Facultet facultet = new Facultet();
+                facultet.setName(jTextFieldfakultet.getText());
+                facultet.setSpec(jTextFieldspec.getText());
+                univer.setFacultet(facultet);
+                student.setName(jTextFieldname.getText());
+                student.setSurname(jTextFieldsurname.getText());
+                student.setUniver(univer);
+                student.setAvscore(jTextFieldsrbal.getText());
+                student.setGroup(jTextFieldgroup.getText());
+               student.setNumber(jTextFieldnumber.getText());
+
+                conroller.addStudent(student);
                 updateStudentGui();
             }
         });
@@ -209,9 +222,8 @@ public class View {
         jButtonAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-         /*   *//*    createStudent(jTextField.getText());
-                updateStudentGui()*//*;
-              *//*  strplus();*/
+               updateStudentGui();
+               strplus();
 
             }
         });
@@ -235,11 +247,11 @@ public class View {
     }
 
 
-  /*  public void findStudent(String name){
-        jTextArea.setText(conroller.getName()("D:\\students\\"+name + ".txt"));
+    public void findStudent(String name){
+        jTextArea.setText(conroller.getName(name+".txt"));
 
 
-    }*/
+    }
     public void generateButton(){
         strings = conroller.getSections();
         int bounds = 1;
@@ -268,8 +280,10 @@ public class View {
                 public void actionPerformed(ActionEvent e) {
                     // jLabel.setText(path);
                     jTextArea.setText(conroller.getName(path));
+
                     //jTextArea.setText(customClient.readFile(path));
                     deleteStudent  = path;
+                    System.out.println(deleteStudent);
 
 
                 }
@@ -286,9 +300,9 @@ public class View {
 
     }
 
-/*    public void strplus()
+    public void strplus()
     {
-        if(((endnumber)*6)>=customClient.getPathFile().length)
+        if(((endnumber)*6)>=conroller.getSections().size())
         {
             System.out.println("Последняя страницы");
         }
@@ -297,7 +311,7 @@ public class View {
             endnumber++;
             updateStudentGui();
         }
-    }*/
+    }
 
     public static void main(String[] args) {
         new View();

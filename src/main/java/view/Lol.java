@@ -2,9 +2,13 @@ package view;
 
 import com.aipos.CustomService;
 
+import java.io.File;
+
 public class Lol {
     public static void main(String[] args) {
-        CustomService customService = new CustomService();
-        System.out.println(customService.readFile("pasha"));
+
+        File file = new File("D:\\aipos4lab\\"+"1" + ".txt");
+        file.delete();
+      //  System.out.println(customService.readFile("pasha"));
     }
 }

@@ -1,10 +1,10 @@
 package com.aipos;
 
+import com.aipos.models.Student;
 import com.google.gson.Gson;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.awt.*;
 
 @Path("/h")
 public class Server {
@@ -22,12 +22,22 @@ public class Server {
     public String getConcreateSection(@PathParam("name") String name){
         return gson.toJson(customService.readFile(name));
     }
+
+
+
     @POST
-    @Path("students")
+    @Path("aipos4lab")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
     public void updateSubection(@FormParam("student") String param){
+        Student student = gson.fromJson(param, Student.class);
+    customService.createStudent(student);
+    }
 
-    customService.createStudent(gson.fromJson(param, Student.class).getName());
+    @DELETE
+    @Path("{name}")
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public void deleteSubsection(@PathParam("name") String name){
+        customService.deletefile(name);
     }
 
 

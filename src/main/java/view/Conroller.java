@@ -1,12 +1,10 @@
 package view;
 
-import com.aipos.Student;
+import com.aipos.models.Student;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import netscape.javascript.JSObject;
 import org.glassfish.jersey.client.ClientConfig;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
@@ -15,7 +13,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Conroller {
@@ -30,6 +27,14 @@ public class Conroller {
         client = ClientBuilder.newClient(config);
         target = client.target(getBaseURI());
         gson = new Gson();
+    }
+    public void deleteFile(String name) {
+        Response response = target.path("rest").
+                path("h").
+                path(name).
+                request().
+                delete();
+        System.out.println(response.toString());
     }
 
     public List<String> getSections() {
@@ -51,15 +56,18 @@ public class Conroller {
         return gson.fromJson(response, new TypeToken<String>(){}.getType());
     }
 
-    public void  addStudent (String name) {
+    public void  addStudent (Student student) {
         Form form = new Form();
 
-        form.param("student",gson.toJson(new Student(name)));
+        form.param("student",gson.toJson(student));
         Response response = target.
+                path("rest").
                 path("h").
-                path("students").
+                path("aipos4lab").
                 request().
                 post(Entity.entity(form,MediaType.APPLICATION_FORM_URLENCODED),Response.class);
+
+        System.out.println(response);
 
     }
 
